@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.noedge.dao.PersonDao">
+    <resultMap id="resultMap" type="Person">
+        <id property="id" column="id" javaType="Integer"/>
+        <id property="name" column="name" javaType="String"/>
+        <id property="phone" column="phone" javaType="String"/>
+        <id property="email" column="email" javaType="String"/>
+        <id property="password" column="password" javaType="String"/>
+        <id property="salt" column="salt" javaType="String"/>
+        <id property="groupId" column="group_id" javaType="Integer"/>
+        <id property="createTime" column="create_time" javaType="String"/>
+        <id property="updateTime" column="update_time" javaType="String"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Person" useGeneratedKeys="true">
+        insert into person (name,phone,email,password,salt,group_id,create_time,update_time) values (#{name},#{phone},#{email},#{password},#{salt},#{group_id},#{create_time},#{update_time})
+    </insert>
+
+    <delete id="delete" parameterType="Integer">
+        delete from person where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="Person">
+        update person set name=#{name},phone=#{phone},email=#{email},password=#{password},salt=#{salt},group_id=#{group_id},create_time=#{create_time},update_time=#{update_time} where id = #{id}
+    </update>
+
+    <select id="selectAllInfoById" parameterType="Integer" resultMap="resultMap">
+        select id,name,phone,email,password,salt,group_id,create_time,update_time from person where id=#{id}
+    </select>
+
+    <select id="selectBasicInfoById" parameterType="Integer" resultMap="resultMap">
+        select name,phone,email,group_id from person where id=#{id}
+    </select>
+    <select id="selectAllInfoByLoginId" parameterType="String" resultMap="resultMap">
+        select id,name,phone,email,password,salt,group_id,create_time,update_time from person where name=#{loginId} OR phone=#{loginId} OR email=#{loginId}
+    </select>
+
+    <select id="selectAll" resultMap="resultMap">
+        select id,name,phone,email,password,salt,group_id,create_time,update_time from person
+    </select>
+</mapper>
