@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Base64Utils;
-import org.springframework.util.DigestUtils;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.util.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
@@ -18,40 +15,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @Description:
  */
-@Controller
+@RestController
 public class UserController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Autowired
     private PersonService personService;
 
     @RequestMapping(value = "/test")
-    public void test(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        PrintWriter out = null;
-//        String data = "{\"name\":\"舞蹈家\"}";
-//        try {
-//            out = response.getWriter();
-//            out.write(data);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }finally {
-//            out.flush();
-//            out.close();
-//        }
-//        modelMap.addAttribute("data",data);
-//        return "jsonData";
+    public Result test() throws ServletException, IOException {
+        return Result.getResult(0,"测试惹",null);
     }
 
     @RequestMapping("/login")
-    @ResponseBody
-    public Result login(HttpServletRequest request, HttpServletResponse response,@RequestParam Map map){
-        Result result = new Result();
+    public Result login(HttpServletRequest request,@RequestParam Map map){
         String inputLoginId =(String) map.get("loginId");
         String inputPassword =(String) map.get("password");
         if(StringUtils.isEmpty(inputLoginId) || StringUtils.isEmpty(inputPassword)){
@@ -70,7 +52,9 @@ public class UserController {
         //获取盐
         String salt = person.getSalt();
         //计算实际密码 md5(password+salt)
-        inputPassword = new String(DigestUtils.md5Digest((inputPassword+ "" + salt).getBytes()));
+        inputPassword = new String(DigestUtils.md5DigestAsHex((inputPassword+ "" + salt).getBytes()));
+
+        logger.info(inputPassword);
 
         //获取表中实际密码
         String password = person.getPassword();
@@ -84,14 +68,12 @@ public class UserController {
         HttpSession session = request.getSession();
         session.setAttribute(sessionId,person);
 
-        clearPersonSensitiveInfo(person);
-        return Result.getResult(1,"登录成功",person);
+        //封装返回对象
+        Map<String,Object> resultData = new HashMap<String, Object>();
+        resultData.put("id",person.getId());
+        resultData.put("name",person.getName());
+        resultData.put("group_id",person.getGroupId());
+        return Result.getResult(1,"登录成功",resultData);
     }
 
-    private void clearPersonSensitiveInfo(Person person) {
-        person.setPassword("");
-        person.setSalt("");
-        person.setEmail("");
-        person.setPhone("");
-    }
 }

@@ -1,14 +1,9 @@
 package org.noedge.domain;
 
-import org.springframework.util.ObjectUtils;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @Description:
  */
-public class Result extends HashMap {
+public class Result {
     private Integer retCode = -1;
     private String message="";
     private Object result;

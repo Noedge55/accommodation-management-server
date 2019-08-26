@@ -28,7 +28,6 @@ public class LoginFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         logger.info("--------------sessionId:"+request.getRequestedSessionId() + "-------------------");
-        filterChain.doFilter(servletRequest,servletResponse);
         String path = request.getServletPath();
         PrintWriter out = null;
         try {

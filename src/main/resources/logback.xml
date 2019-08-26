@@ -18,7 +18,7 @@
     -->
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <charset>UTF-8</charset>
+            <charset>GBK</charset>
             <pattern>[%d{MM-dd HH:mm:ss}][%p][%logger{0}:%line] - %m%n</pattern>
         </encoder>
     </appender>
