@@ -2,6 +2,7 @@ package org.noedge.web.filter;
 
 import com.alibaba.fastjson.JSON;
 import org.noedge.domain.LoginStatus;
+import org.noedge.domain.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,9 +46,9 @@ public class LoginFilter implements Filter {
             }
             if(loginStatus == 0){
                 out = response.getWriter();
-                Map<String,Integer> map = new HashMap<String, Integer>();
-                map.put("is_login", LoginStatus.NOT_LOGGED_IN);
-                out.write(JSON.toJSONString(map));
+//                Map<String,Integer> map = new HashMap<String, Integer>();
+//                map.put("is_login", LoginStatus.NOT_LOGGED_IN);
+                out.write(JSON.toJSONString(Result.getResult(-999,"未登录",null)));
             }
         }finally {
             if(null != out){

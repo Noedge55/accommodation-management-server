@@ -1,4 +1,5 @@
 import com.alibaba.fastjson.JSON;
+import com.mysql.cj.Session;
 import org.junit.Test;
 import org.noedge.domain.LoginStatus;
 import org.slf4j.Logger;
@@ -19,5 +20,10 @@ public class TestDemo {
         Map<String,Integer> map = new HashMap<String,Integer>();
         map.put("is_login", LoginStatus.NOT_LOGGED_IN);
         logger.info(JSON.toJSONString(map));
+    }
+
+    @Test
+    public void clearSession(){
+//        Session session =
     }
 }

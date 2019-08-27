@@ -29,7 +29,7 @@ public class UserController {
 
     @RequestMapping(value = "/test")
     public Result test() throws ServletException, IOException {
-        return Result.getResult(0,"测试惹",null);
+        return Result.getResult(0,"已经登录",null);
     }
 
     @RequestMapping("/login")
