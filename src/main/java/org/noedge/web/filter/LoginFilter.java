@@ -48,6 +48,7 @@ public class LoginFilter implements Filter {
                 out = response.getWriter();
 //                Map<String,Integer> map = new HashMap<String, Integer>();
 //                map.put("is_login", LoginStatus.NOT_LOGGED_IN);
+                ResponseHeader.addHeader(response);
                 out.write(JSON.toJSONString(Result.getResult(-999,"未登录",null)));
             }
         }finally {

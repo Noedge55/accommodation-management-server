@@ -1,17 +1,28 @@
 import com.alibaba.fastjson.JSON;
 import com.mysql.cj.Session;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.noedge.domain.LoginStatus;
+import org.noedge.service.BusinessService;
+import org.noedge.tools.MyDateFomat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @Description:
  */
+@RunWith(SpringJUnit4ClassRunner.class) //使用junit4进行测试
+@ContextConfiguration(locations={"classpath:spring-context.xml"})
 public class TestDemo {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Test
     public void loggerTest(){
         Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -25,5 +36,15 @@ public class TestDemo {
     @Test
     public void clearSession(){
 //        Session session =
+    }
+
+    @Autowired
+    private BusinessService businessService;
+    @Test
+    public void getTodayLivingNumByHostelIdTest(){
+        List<Integer> hostelIds = new ArrayList<Integer>() ;
+        hostelIds.add(1);
+        Map<Integer,Map<String,Integer>> map = businessService.getTodayLivingNumByHostelIds(hostelIds, MyDateFomat.formatDate());
+        logger.info(map.toString());
     }
 }

@@ -12,6 +12,7 @@ public class Hostel implements Serializable {
     private Integer id;
     private String name;
     private String area;
+    private String address;
     private String createTime;
     private String updateTime;
     private Integer createPId;
@@ -71,5 +72,13 @@ public class Hostel implements Serializable {
 
     public void setLast_updatePId(Integer last_updatePId) {
         this.last_updatePId = last_updatePId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
