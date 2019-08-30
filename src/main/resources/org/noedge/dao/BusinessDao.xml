@@ -17,17 +17,17 @@
     </select>
 
     <select id="selectHostelLivingNumAll" resultType="map">
-        SELECT one.hostel_id,one.living_num,two.total_num FROM (SELECT o.hostel_id,sum(r.living_num) living_num FROM check_in_room r LEFT JOIN check_in_order o ON r.order_id = o.id AND o.hostel_id in
-        <foreach item="item" index="index" collection="arg0" open="("  close=")" separator=",">
-            #{item}
-        </foreach>
-        AND o.check_in_date <![CDATA[ <= ]]> #{arg1} AND o.check_out_date > #{arg1} group by o.hostel_id) one
+        SELECT one.hostel_id,one.total_num,two.living_num  from (select hostel_id,sum(living_num) total_num from room where hostel_id in
+            <foreach item="item" index="index" collection="arg0" open="("  close=")" separator=",">
+                #{item}
+            </foreach>
+        group by hostel_id) one
         LEFT JOIN
-            (select hostel_id,sum(living_num) total_num from room where hostel_id in
-        <foreach item="item" index="index" collection="arg0" open="("  close=")" separator=",">
-            #{item}
-        </foreach>
-        group by hostel_id) two
+        (SELECT o.hostel_id,sum(r.living_num) living_num FROM check_in_room r  JOIN check_in_order o ON r.order_id = o.id AND o.hostel_id in
+            <foreach item="item" index="index" collection="arg0" open="("  close=")" separator=",">
+                #{item}
+            </foreach>
+        AND o.check_in_date <![CDATA[<=]]> '2019-08-30' AND o.check_out_date > '2019-08-30' group by o.hostel_id) two
         ON one.hostel_id = two.hostel_id
     </select>
 

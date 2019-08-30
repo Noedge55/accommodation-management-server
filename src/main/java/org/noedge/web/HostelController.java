@@ -4,6 +4,7 @@ import org.noedge.domain.Hostel;
 import org.noedge.domain.Result;
 import org.noedge.service.BusinessService;
 import org.noedge.service.HostelService;
+import org.noedge.tools.ConversionUtils;
 import org.noedge.tools.MyDateFomat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,8 +64,8 @@ public class HostelController {
             temp.put("name",hostel.getName());
             temp.put("area",hostel.getArea());
             temp.put("address",hostel.getAddress());
-            temp.put("livingNum",livingNumMap.get(hostel.getId()).get("living_num"));
-            temp.put("totalNum",livingNumMap.get(hostel.getId()).get("total_num"));
+            temp.put("livingNum", ConversionUtils.returnZero(livingNumMap.get(hostel.getId()).get("living_num")));
+            temp.put("totalNum",ConversionUtils.returnZero(livingNumMap.get(hostel.getId()).get("total_num")));
             resultList.add(temp);
         }
 
