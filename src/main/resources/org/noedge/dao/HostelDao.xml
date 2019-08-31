@@ -9,7 +9,7 @@
         <id property="createTime" column="create_time" javaType="String"/>
         <id property="updateTime" column="update_time" javaType="String"/>
         <id property="createPId" column="create_p_id" javaType="Integer"/>
-        <id property="last_updatePId" column="last_update_p_id" javaType="Integer"/>
+        <id property="lastUpdatePID" column="last_update_p_id" javaType="Integer"/>
     </resultMap>
 
     <select id="selectAll" resultMap="resultMap">
