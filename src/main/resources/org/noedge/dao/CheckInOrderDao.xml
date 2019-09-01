@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.noedge.dao.CheckInOrderDao">
+    <resultMap id="resultMap" type="CheckInOrder">
+        <id property="id" column="id" javaType="Integer"/>
+        <id property="sourceId" column="source_id" javaType="Integer"/>
+        <id property="livingNum" column="living_num" javaType="Integer"/>
+        <id property="names" column="names" javaType="String"/>
+        <id property="phone" column="phone" javaType="String"/>
+        <id property="hostelId" column="hostel_id" javaType="Integer"/>
+        <id property="checkInDate" column="check_in_date" javaType="String"/>
+        <id property="checkOutDate" column="check_out_date" javaType="String"/>
+        <id property="amount" column="amount" javaType="double"/>
+        <id property="createTime" column="create_time" javaType="String"/>
+        <id property="updateTime" column="update_time" javaType="String"/>
+        <id property="createPId" column="create_p_id" javaType="Integer"/>
+        <id property="lastUpdatePID" column="last_update_p_id" javaType="Integer"/>
+    </resultMap>
+
+    <select id="getOrders" resultMap="resultMap" parameterType="hashMap">
+        SELECT one.id,
+               one.source_id,
+               one.living_num,
+               one.`names`,
+               one.phone,
+               one.hostel_id,
+               one.check_in_date,
+               one.check_out_date,
+               one.amount,
+               one.create_time,
+               one.update_time,
+               one.create_p_id,
+               one.last_update_p_id FROM check_in_order one JOIN
+
+                                         (SELECT p1.hostel_id hostel_id from permission p1 WHERE p1.person_id = 1 AND p1.type = 0
+                                          UNION
+                                          SELECT p2.hostel_id hostel_id FROM permission p2 WHERE p2.group_id = (SELECT p.group_id FROM person p where p.id = 1)) two
+                                         ON one.hostel_id = two.hostel_id
+    </select>
+
+    <select id="selectAllByPIdPermission" resultMap="resultMap" parameterType="Integer">
+        SELECT DISTINCT h.id,h.name,h.area,h.address,h.create_time,h.update_time,h.create_p_id,h.last_update_p_id from hostel h RIGHT JOIN (SELECT p1.hostel_id hostel_id from permission p1 WHERE p1.person_id = #{permissionPId} AND p1.type = 0
+                                                                                                                                            UNION ALL
+                                                                                                                                            SELECT p2.hostel_id hostel_id FROM permission p2 WHERE p2.group_id = (SELECT p.group_id FROM person p where p.id = #{permissionPId}) AND p2.type = #{permissionPId}) as total on h.id = total.hostel_id
+    </select>
+
+</mapper>
