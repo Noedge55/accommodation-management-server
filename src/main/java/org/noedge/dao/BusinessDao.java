@@ -2,6 +2,7 @@ package org.noedge.dao;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,4 +32,11 @@ public interface BusinessDao {
      * @return
      */
     List<Map<String,Integer>> selectHostelLivingNumAll(List<Integer> hostelIds,String today);
+
+    /**
+     * 分页查询订单信息
+     * @param param
+     * @return
+     */
+    List<Map> getOrdersByPage(Map param);
 }

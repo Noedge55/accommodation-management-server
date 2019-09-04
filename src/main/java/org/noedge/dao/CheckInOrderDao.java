@@ -10,5 +10,5 @@ import java.util.Map;
  */
 @Repository("checkInOrderDao")
 public interface CheckInOrderDao {
-    public Result getOrders(Map param);
+
 }

@@ -14,29 +14,29 @@
     </resultMap>
 
     <insert id="insert" parameterType="Person" useGeneratedKeys="true">
-        insert into person (name,phone,email,password,salt,group_id,create_time,update_time) values (#{name},#{phone},#{email},#{password},#{salt},#{group_id},#{create_time},#{update_time})
+        insert into T_PERSON (name,phone,email,password,salt,group_id,create_time,update_time) values (#{name},#{phone},#{email},#{password},#{salt},#{group_id},#{create_time},#{update_time})
     </insert>
 
     <delete id="delete" parameterType="Integer">
-        delete from person where id = #{id}
+        delete from T_PERSON where id = #{id}
     </delete>
 
     <update id="update" parameterType="Person">
-        update person set name=#{name},phone=#{phone},email=#{email},password=#{password},salt=#{salt},group_id=#{group_id},create_time=#{create_time},update_time=#{update_time} where id = #{id}
+        update T_PERSON set name=#{name},phone=#{phone},email=#{email},password=#{password},salt=#{salt},group_id=#{group_id},create_time=#{create_time},update_time=#{update_time} where id = #{id}
     </update>
 
     <select id="selectAllInfoById" parameterType="Integer" resultMap="resultMap">
-        select id,name,phone,email,password,salt,group_id,create_time,update_time from person where id=#{id}
+        select id,name,phone,email,password,salt,group_id,create_time,update_time from T_PERSON where id=#{id}
     </select>
 
     <select id="selectBasicInfoById" parameterType="Integer" resultMap="resultMap">
-        select name,phone,email,group_id from person where id=#{id}
+        select name,phone,email,group_id from T_PERSON where id=#{id}
     </select>
     <select id="selectAllInfoByLoginId" parameterType="String" resultMap="resultMap">
-        select id,name,phone,email,password,salt,group_id,create_time,update_time from person where name=#{loginId} OR phone=#{loginId} OR email=#{loginId}
+        select id,name,phone,email,password,salt,group_id,create_time,update_time from T_PERSON where name=#{loginId} OR phone=#{loginId} OR email=#{loginId}
     </select>
 
     <select id="selectAll" resultMap="resultMap">
-        select id,name,phone,email,password,salt,group_id,create_time,update_time from person
+        select id,name,phone,email,password,salt,group_id,create_time,update_time from T_PERSON
     </select>
 </mapper>

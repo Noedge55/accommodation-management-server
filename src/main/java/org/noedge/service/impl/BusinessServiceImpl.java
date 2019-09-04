@@ -23,4 +23,9 @@ public class BusinessServiceImpl implements BusinessService {
         }
         return result;
     }
+
+    @Override
+    public List<Map> getOrdersByPage(Map param) {
+        return businessDao.getOrdersByPage(param);
+    }
 }

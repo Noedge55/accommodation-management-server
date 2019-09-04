@@ -1,6 +1,7 @@
 package org.noedge.web;
 
 import org.noedge.domain.Hostel;
+import org.noedge.domain.Person;
 import org.noedge.domain.Result;
 import org.noedge.service.BusinessService;
 import org.noedge.service.HostelService;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +30,16 @@ public class HostelController {
 
     @Autowired
     private BusinessService businessService;
+
+    @RequestMapping(value = "/getHostels")
+    public  Result getHostels(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        Person person = (Person) session.getAttribute(session.getId());
+        Integer personId = person.getId();
+        List<Hostel> hostelList = hostelService.getAllByPIdPermission(personId);
+
+        return Result.getResult(0,"success",hostelList);
+    }
 
     @RequestMapping(value = "/getHomehostelList")
     public Result getHomehotelList(@RequestParam Map map){

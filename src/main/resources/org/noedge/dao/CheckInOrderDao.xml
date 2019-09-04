@@ -17,31 +17,33 @@
         <id property="lastUpdatePID" column="last_update_p_id" javaType="Integer"/>
     </resultMap>
 
-    <select id="getOrders" resultMap="resultMap" parameterType="hashMap">
-        SELECT one.id,
-               one.source_id,
-               one.living_num,
-               one.`names`,
-               one.phone,
-               one.hostel_id,
-               one.check_in_date,
-               one.check_out_date,
-               one.amount,
-               one.create_time,
-               one.update_time,
-               one.create_p_id,
-               one.last_update_p_id FROM check_in_order one JOIN
-
-                                         (SELECT p1.hostel_id hostel_id from permission p1 WHERE p1.person_id = 1 AND p1.type = 0
-                                          UNION
-                                          SELECT p2.hostel_id hostel_id FROM permission p2 WHERE p2.group_id = (SELECT p.group_id FROM person p where p.id = 1)) two
-                                         ON one.hostel_id = two.hostel_id
+    <select id="getOrdersByPage" resultType="map" parameterType="hashMap">
+        SELECT
+            h.`name` hostelName,
+            one.source_id,
+            one.living_num,
+            one.`names` personNames,
+            one.check_in_date,
+            one.check_out_date,
+            one.create_time
+        FROM
+            T_CHECK_IN_ORDER one
+                JOIN V_PERMISSION_P_H two ON one.hostel_id = two.hostel_id AND two.person_id = #{personId}
+                JOIN T_HOSTEL h
+                    ON one.hostel_id = h.id
+        <where>
+            <if test="dateType != 'all'">
+                one.check_in_date >= #{startDate} AND one.check_in_date <![CDATA[ <= ]]> #{endDate}
+            </if>
+        </where>
+        ORDER BY one.check_in_date asc,one.id asc,one.create_time asc
+        <choose>
+            <when test="page == null or page == ''">
+                LIMIT 0,10
+            </when>
+            <otherwise>
+                LIMIT 10 * ${page},10
+            </otherwise>
+        </choose>
     </select>
-
-    <select id="selectAllByPIdPermission" resultMap="resultMap" parameterType="Integer">
-        SELECT DISTINCT h.id,h.name,h.area,h.address,h.create_time,h.update_time,h.create_p_id,h.last_update_p_id from hostel h RIGHT JOIN (SELECT p1.hostel_id hostel_id from permission p1 WHERE p1.person_id = #{permissionPId} AND p1.type = 0
-                                                                                                                                            UNION ALL
-                                                                                                                                            SELECT p2.hostel_id hostel_id FROM permission p2 WHERE p2.group_id = (SELECT p.group_id FROM person p where p.id = #{permissionPId}) AND p2.type = #{permissionPId}) as total on h.id = total.hostel_id
-    </select>
-
 </mapper>

@@ -13,13 +13,11 @@
     </resultMap>
 
     <select id="selectAll" resultMap="resultMap">
-        SELECT id,name,area,address,create_time,update_time,create_p_id,last_update_p_id from hostel
+        SELECT id,name,area,address,create_time,update_time,create_p_id,last_update_p_id from T_HOSTEL
     </select>
 
     <select id="selectAllByPIdPermission" resultMap="resultMap" parameterType="Integer">
-        SELECT DISTINCT h.id,h.name,h.area,h.address,h.create_time,h.update_time,h.create_p_id,h.last_update_p_id from hostel h RIGHT JOIN (SELECT p1.hostel_id hostel_id from permission p1 WHERE p1.person_id = #{permissionPId} AND p1.type = 0
-                                                                                                                                            UNION ALL
-                                                                                                                                            SELECT p2.hostel_id hostel_id FROM permission p2 WHERE p2.group_id = (SELECT p.group_id FROM person p where p.id = #{permissionPId}) AND p2.type = #{permissionPId}) as total on h.id = total.hostel_id
+        SELECT  h.id,h.name,h.area,h.address,h.create_time,h.update_time,h.create_p_id,h.last_update_p_id from T_HOSTEL h JOIN V_PERMISSION_P_H  as total on h.id = total.hostel_id AND total.person_id = #{permissionPId}
     </select>
 
 </mapper>

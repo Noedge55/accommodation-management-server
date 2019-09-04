@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.noedge.dao.BusinessDao">
+<!--    获取今日旅社入住人数-->
     <select id="selectTodayLivingNumByHostelIdAndDate" resultType="Integer">
-        SELECT o.hostel_id,sum(r.living_num) living_number FROM check_in_room r LEFT JOIN check_in_order o ON r.order_id = o.id AND o.hostel_id in
+        SELECT o.hostel_id,sum(r.living_num) living_number FROM T_CHECK_IN_ROOM r LEFT JOIN T_CHECK_IN_ORDER o ON r.order_id = o.id AND o.hostel_id in
                 <foreach item="item" index="index" collection="list" open="("  close=")" separator=",">
                        #{arg0}
                 </foreach>
              AND o.check_in_date <![CDATA[ <= ]]> #{arg1} AND o.check_out_date > #{arg1} group by o.hostel_id
     </select>
+
+    <!-- 获取旅社入住总人数 -->
     <select id="selectTotalLivingNumByHostelId" resultType="Integer" parameterType="list">
-        select hostel_id,sum(living_num) total_num from room where hostel_id in
+        select hostel_id,sum(living_num) total_num from T_ROOM where hostel_id in
         <foreach item="item" index="index" collection="list" open="("  close=")" separator=",">
             #{hostelIds}
         </foreach>
         group by hostel_id
     </select>
 
+    <!-- 获取旅社今日入住人数以及入住总人数 -->
     <select id="selectHostelLivingNumAll" resultType="map">
-        SELECT one.hostel_id,one.total_num,two.living_num  from (select hostel_id,sum(living_num) total_num from room where hostel_id in
+        SELECT one.hostel_id,one.total_num,two.living_num  from (select hostel_id,sum(living_num) total_num from T_ROOM where hostel_id in
             <foreach item="item" index="index" collection="arg0" open="("  close=")" separator=",">
                 #{item}
             </foreach>
         group by hostel_id) one
         LEFT JOIN
-        (SELECT o.hostel_id,sum(r.living_num) living_num FROM check_in_room r  JOIN check_in_order o ON r.order_id = o.id AND o.hostel_id in
+        (SELECT o.hostel_id,sum(r.living_num) living_num FROM T_CHECK_IN_ROOM r  JOIN T_CHECK_IN_ORDER o ON r.order_id = o.id AND o.hostel_id in
             <foreach item="item" index="index" collection="arg0" open="("  close=")" separator=",">
                 #{item}
             </foreach>
@@ -31,4 +35,39 @@
         ON one.hostel_id = two.hostel_id
     </select>
 
+    <!-- 分页获取入住订单-->
+    <select id="getOrdersByPage" resultType="map" parameterType="map">
+        SELECT
+        ieb.id,
+        h.`name` hostelName,
+        ieb.content,
+        ieb.amount,
+        ieb.bill_type,
+        ieb.spend_time,
+        cio.source_id,
+        cio.living_num,
+        cio.`names` personNames,
+        cio.check_in_date,
+        cio.check_out_date,
+        ieb.create_time
+        FROM
+        T_INCOME_EXPENDITURE_BILL ieb
+        JOIN V_PERMISSION_P_H one ON ieb.hostel_id = one.hostel_id AND one.person_id = #{personId}
+        JOIN T_HOSTEL h ON ieb.hostel_id = h.id
+        LEFT JOIN T_CHECK_IN_ORDER cio ON ieb.id = cio.id
+        <where>
+            <if test="dateType != 'all'">
+                ieb.spend_time >= #{startDate} AND ieb.spend_time <![CDATA[ <= ]]> #{endDate}
+            </if>
+        </where>
+        ORDER BY ieb.spend_time asc,ieb.id asc,ieb.create_time asc
+        <choose>
+            <when test="page == null or page == ''">
+                LIMIT 0,10
+            </when>
+            <otherwise>
+                LIMIT 10 * ${page},10
+            </otherwise>
+        </choose>
+    </select>
 </mapper>
