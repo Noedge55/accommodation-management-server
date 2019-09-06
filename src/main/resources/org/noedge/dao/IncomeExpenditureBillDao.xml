@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.noedge.dao.IncomeExpenditureBillDao">
-    <resultMap id="resultMap" type="CheckInOrder">
+    <resultMap id="resultMap" type="IncomeExpenditureBill">
         <id property="id" column="id" javaType="Integer"/>
         <id property="hostelId" column="hostel_id" javaType="Integer"/>
         <id property="content" column="content" javaType="String"/>
@@ -12,4 +12,22 @@
         <id property="lastUpdatePID" column="last_update_p_id" javaType="Integer"/>
     </resultMap>
 
+    <select id="selectBillStatistics" resultType="map" parameterType="map">
+        SELECT
+        ieb.bill_type,
+        SUM(ieb.amount) total_amount
+        FROM
+        T_INCOME_EXPENDITURE_BILL AS ieb
+        JOIN V_PERMISSION_P_H v ON ieb.hostel_id = v.hostel_id AND v.person_id = #{personId}
+        <where>
+            <if test="checkIds != null and checkIds != ''">
+                v.hostel_id IN (${checkIds})
+            </if>
+            <if test="dateType != 'all'">
+                ieb.spend_time >= #{startDate} AND ieb.spend_time <![CDATA[ <= ]]> #{endDate}
+            </if>
+        </where>
+        GROUP BY ieb.bill_type
+        ORDER BY ieb.bill_type ASC
+    </select>
 </mapper>

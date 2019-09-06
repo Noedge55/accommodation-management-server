@@ -10,5 +10,5 @@ import java.util.Map;
  */
 @Repository("incomeExpenditureBillDao")
 public interface IncomeExpenditureBillDao {
-    public List<Map> getBillStatistics(Map param);
+    List<Map<String,Object>> selectBillStatistics(Map param);
 }

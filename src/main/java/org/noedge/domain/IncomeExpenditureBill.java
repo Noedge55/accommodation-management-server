@@ -1,9 +1,14 @@
 package org.noedge.domain;
 
+import org.springframework.stereotype.Repository;
+
+import java.io.Serializable;
+
 /**
  * @Description:
  */
-public class IncomeExpenditureBill {
+@Repository
+public class IncomeExpenditureBill implements Serializable {
     private Integer id;
     private Integer hostelId;
     private String content;

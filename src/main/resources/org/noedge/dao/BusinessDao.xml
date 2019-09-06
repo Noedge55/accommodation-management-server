@@ -42,22 +42,25 @@
         h.`name` hostelName,
         ieb.content,
         ieb.amount,
-        ieb.bill_type,
-        ieb.spend_time,
-        cio.source_id,
-        cio.living_num,
+        ieb.bill_type billType,
+        ieb.spend_time spendTime,
+        cio.source_id sourceId,
+        cio.living_num livingNum,
         cio.`names` personNames,
-        cio.check_in_date,
-        cio.check_out_date,
-        ieb.create_time
+        cio.check_in_date checkInDate,
+        cio.check_out_date checkOutDate,
+        ieb.create_time createTime
         FROM
         T_INCOME_EXPENDITURE_BILL ieb
         JOIN V_PERMISSION_P_H one ON ieb.hostel_id = one.hostel_id AND one.person_id = #{personId}
         JOIN T_HOSTEL h ON ieb.hostel_id = h.id
         LEFT JOIN T_CHECK_IN_ORDER cio ON ieb.id = cio.id
         <where>
+            <if test="checkIds != null and checkIds != ''">
+                h.id IN (${checkIds})
+            </if>
             <if test="dateType != 'all'">
-                ieb.spend_time >= #{startDate} AND ieb.spend_time <![CDATA[ <= ]]> #{endDate}
+               AND ieb.spend_time >= #{startDate} AND ieb.spend_time <![CDATA[ <= ]]> #{endDate}
             </if>
         </where>
         ORDER BY ieb.spend_time asc,ieb.id asc,ieb.create_time asc

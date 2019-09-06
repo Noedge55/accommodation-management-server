@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noedge.domain.LoginStatus;
 import org.noedge.service.BusinessService;
+import org.noedge.service.IncomeExpenditureBillService;
 import org.noedge.tools.MyDateFomat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,11 +41,28 @@ public class TestDemo {
 
     @Autowired
     private BusinessService businessService;
+    @Autowired
+    private IncomeExpenditureBillService incomeExpenditureBillService;
     @Test
     public void getTodayLivingNumByHostelIdTest(){
         List<Integer> hostelIds = new ArrayList<Integer>() ;
         hostelIds.add(1);
         Map<Integer,Map<String,Integer>> map = businessService.getTodayLivingNumByHostelIds(hostelIds, MyDateFomat.formatDate());
         logger.info(map.toString());
+    }
+
+    @Test
+    public void getBillStatisticsTest(){
+        Map<String,Object> param2 = new HashMap<>();
+        param2.put("personId",1);
+        param2.put("dateType","all");
+        param2.put("hostelId",1);
+//        param2.put("startDate",startDate);
+//        param2.put("endDate",endDate);
+//        param2.put("page",page);
+//        List<Map> list = incomeExpenditureBillService.getBillStatistics(param2);
+
+//        logger.info(list.toString());
+
     }
 }

@@ -3,7 +3,9 @@ package org.noedge.web;
 import org.noedge.domain.Person;
 import org.noedge.domain.Result;
 import org.noedge.service.BusinessService;
+import org.noedge.service.IncomeExpenditureBillService;
 import org.noedge.tools.MyDateFomat;
+import org.noedge.tools.MyDecimalFomart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class CheckInOrderController {
 
     @Autowired
     private BusinessService businessService;
+    @Autowired
+    private IncomeExpenditureBillService incomeExpenditureBillService;
 
     @RequestMapping(value = "/getOrders")
     public Result getOrders(HttpServletRequest request,@RequestParam Map<String,String> param){
@@ -38,6 +42,7 @@ public class CheckInOrderController {
         String startDate = param.get("startDate");
         String endDate = param.get("endDate");
         String pageStr = param.get("page");
+        String checkIds = param.get("checkIds");
         int page = 0;
         try{
             if(!StringUtils.isEmpty(pageStr)){
@@ -72,9 +77,20 @@ public class CheckInOrderController {
         param2.put("startDate",startDate);
         param2.put("endDate",endDate);
         param2.put("page",page);
-        List<Map> list = businessService.getOrdersByPage(param2);
+        param2.put("checkIds",checkIds);
+
+        Map<Integer,Double> billStatistics = incomeExpenditureBillService.getBillStatistics(param2);
+        List<Map> billStatisticsList = new ArrayList<>();
+        billStatisticsList.add(billStatistics);
 
 
-        return Result.getResult(0,"success",list);
+        List<Map> billList = businessService.getOrdersByPage(param2);
+
+
+        Map<String,List> result = new HashMap<>();
+        result.put("billStatistics",billStatisticsList);
+        result.put("billList",billList);
+
+        return Result.getResult(0,"success",result);
     }
 }
