@@ -69,7 +69,7 @@
                 LIMIT 0,10
             </when>
             <otherwise>
-                LIMIT 10 * ${page},10
+                LIMIT ${10 * page},10
             </otherwise>
         </choose>
     </select>
