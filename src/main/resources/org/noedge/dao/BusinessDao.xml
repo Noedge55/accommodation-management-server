@@ -61,6 +61,7 @@
             </if>
             <if test="dateType != 'all'">
                AND ieb.spend_time >= #{startDate} AND ieb.spend_time <![CDATA[ <= ]]> #{endDate}
+#                  AND ieb.spend_time BETWEEN  ${startDate} AND ${endDate}
             </if>
         </where>
         ORDER BY ieb.spend_time asc,ieb.id asc,ieb.create_time asc

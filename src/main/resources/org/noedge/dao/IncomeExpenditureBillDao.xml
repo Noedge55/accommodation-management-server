@@ -20,11 +20,11 @@
         T_INCOME_EXPENDITURE_BILL AS ieb
         JOIN V_PERMISSION_P_H v ON ieb.hostel_id = v.hostel_id AND v.person_id = #{personId}
         <where>
-            <if test="checkIds != null and checkIds != ''">
-                v.hostel_id IN (${checkIds})
-            </if>
             <if test="dateType != 'all'">
-                ieb.spend_time >= #{startDate} AND ieb.spend_time <![CDATA[ <= ]]> #{endDate}
+                ieb.spend_time <![CDATA[ >= ]]> #{startDate} AND ieb.spend_time <![CDATA[ <= ]]> #{endDate}
+            </if>
+            <if test="checkIds != null and checkIds != ''">
+                AND v.hostel_id IN (${checkIds})
             </if>
         </where>
         GROUP BY ieb.bill_type

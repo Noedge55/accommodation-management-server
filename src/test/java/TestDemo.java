@@ -55,12 +55,13 @@ public class TestDemo {
     public void getBillStatisticsTest(){
         Map<String,Object> param2 = new HashMap<>();
         param2.put("personId",1);
-        param2.put("dateType","all");
+        param2.put("dateType","today");
         param2.put("hostelId",1);
-//        param2.put("startDate",startDate);
-//        param2.put("endDate",endDate);
+        param2.put("startDate","2019-01-01");
+        param2.put("endDate","2019-10-01");
 //        param2.put("page",page);
-//        List<Map> list = incomeExpenditureBillService.getBillStatistics(param2);
+        Map<Integer,Double> list = incomeExpenditureBillService.getBillStatistics(param2);
+        System.out.println(list);
 
 //        logger.info(list.toString());
 

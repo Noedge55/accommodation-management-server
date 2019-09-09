@@ -55,7 +55,6 @@ public class CheckInOrderController {
         if(StringUtils.isEmpty(dateType)){
             dateType = "all";
         }
-
         switch (dateType){
             case "thisWeek":
                 startDate = MyDateFomat.formatThisWeekMonday();
