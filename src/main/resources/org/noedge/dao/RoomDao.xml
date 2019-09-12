@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.noedge.dao.RoomDao">
+    <select id="selectRoomListByHostelIdAndDate" resultType="map" parameterType="map">
+        select
+        r.id,
+        r.`name`,
+        r.total_num totalNum,
+        r.hostel_id hostelId,
+        r.update_time updateTime,
+        IFNULL(one.living_num,0) livingNum
+        FROM
+        T_ROOM AS r
+        LEFT JOIN
+        (select cir.id,sum(cir.living_num) living_num from T_CHECK_IN_ROOM cir JOIN T_CHECK_IN_ORDER cio ON cio.id = cir.order_id AND cio.hostel_id = #{hostelId}
+        WHERE cio.check_in_date <![CDATA[ <= ]]> #{date} and cio.check_out_date >= #{date}
+        GROUP BY cir.id) one ON r.id = one.id
+    </select>
+
+</mapper>

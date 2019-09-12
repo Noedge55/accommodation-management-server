@@ -1,19 +1,52 @@
 package org.noedge.tools;
 
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.text.*;
 import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @Description:
+ * Description:日期工具类
  */
 public class MyDateFomat  {
+    private static Logger  logger = LoggerFactory.getLogger(MyDateFomat.class);
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
     private static final String datePattern = "yyyy-MM-dd";
     private static final String timePattern = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * 判断date格式是否(yyyy-MM-dd)
+     * @param date
+     * @return
+     */
+    public static boolean isFormatDate(String date){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            dateFormat.parse(date);
+            return true;
+        } catch (ParseException e) {
+            logger.error("",e);
+            return false;
+        }
+    }
+
+    /**
+     * 判断time格式是否(yyyy-MM-dd HH:mm:ss)
+     * @param time
+     * @return
+     */
+    public static boolean isFormatTime(String time){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            dateFormat.parse(time);
+            return true;
+        } catch (ParseException e) {
+            logger.error("",e);
+            return false;
+        }
+    }
 
     public static String formatDate(){
         simpleDateFormat.applyPattern(datePattern);

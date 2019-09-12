@@ -12,7 +12,7 @@
 
     <!-- 获取旅社入住总人数 -->
     <select id="selectTotalLivingNumByHostelId" resultType="Integer" parameterType="list">
-        select hostel_id,sum(living_num) total_num from T_ROOM where hostel_id in
+        select hostel_id,sum(total_num) total_num from T_ROOM where hostel_id in
         <foreach item="item" index="index" collection="list" open="("  close=")" separator=",">
             #{hostelIds}
         </foreach>
@@ -21,7 +21,7 @@
 
     <!-- 获取旅社今日入住人数以及入住总人数 -->
     <select id="selectHostelLivingNumAll" resultType="map">
-        SELECT one.hostel_id,one.total_num,two.living_num  from (select hostel_id,sum(living_num) total_num from T_ROOM where hostel_id in
+        SELECT one.hostel_id,one.total_num,two.living_num  from (select hostel_id,sum(total_num) total_num from T_ROOM where hostel_id in
             <foreach item="item" index="index" collection="arg0" open="("  close=")" separator=",">
                 #{item}
             </foreach>
@@ -49,7 +49,8 @@
         cio.`names` personNames,
         cio.check_in_date checkInDate,
         cio.check_out_date checkOutDate,
-        ieb.create_time createTime
+        ieb.create_time createTime,
+        ieb.update_time updateTime
         FROM
         T_INCOME_EXPENDITURE_BILL ieb
         JOIN V_PERMISSION_P_H one ON ieb.hostel_id = one.hostel_id AND one.person_id = #{personId}

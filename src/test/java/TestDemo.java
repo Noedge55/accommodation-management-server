@@ -2,9 +2,11 @@ import com.alibaba.fastjson.JSON;
 import com.mysql.cj.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noedge.dao.RoomDao;
 import org.noedge.domain.LoginStatus;
 import org.noedge.service.BusinessService;
 import org.noedge.service.IncomeExpenditureBillService;
+import org.noedge.service.RoomService;
 import org.noedge.tools.MyDateFomat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,9 @@ public class TestDemo {
     private BusinessService businessService;
     @Autowired
     private IncomeExpenditureBillService incomeExpenditureBillService;
+
+    @Autowired
+    private RoomService roomService;
     @Test
     public void getTodayLivingNumByHostelIdTest(){
         List<Integer> hostelIds = new ArrayList<Integer>() ;
@@ -65,5 +70,14 @@ public class TestDemo {
 
 //        logger.info(list.toString());
 
+    }
+
+    @Test
+    public void selectRoomListByHostelIdAndDateTest(){
+        Map<String,Object> param2 = new HashMap<>();
+        param2.put("hostelId",1);
+        param2.put("date","2019-08-28");
+        List<Map> list = roomService.getRoomListByHostelIdAndDate(param2);
+        logger.info(list.toString());
     }
 }
