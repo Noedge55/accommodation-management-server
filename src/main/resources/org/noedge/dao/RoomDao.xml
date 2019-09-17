@@ -17,4 +17,10 @@
         GROUP BY cir.id) one ON r.id = one.id
     </select>
 
+    <!--  根据订单id，查询入住安排  -->
+    <select id="selectCheckInRoomByOrderId" resultType="map" parameterType="Integer">
+        SELECT cir.id,r.`name`,cir.living_num livingNum FROM T_CHECK_IN_ROOM cir JOIN T_ROOM r ON cir.room_id = r.id
+        where cir.order_id = #{orderId}
+    </select>
+
 </mapper>

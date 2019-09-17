@@ -20,4 +20,9 @@ public class RoomServiceImpl implements RoomService {
     public List<Map> getRoomListByHostelIdAndDate(Map param) {
         return roomDao.selectRoomListByHostelIdAndDate(param);
     }
+
+    @Override
+    public List<Map> getCheckInRoomByOrderId(Integer orderId) {
+        return roomDao.selectCheckInRoomByOrderId(orderId);
+    }
 }

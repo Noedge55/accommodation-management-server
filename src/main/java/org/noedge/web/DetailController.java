@@ -55,4 +55,23 @@ public class DetailController {
         List<Map> list =  roomDao.selectRoomListByHostelIdAndDate(param);
         return Result.getResult(0,"success",list);
     }
+
+    @RequestMapping(value = "/getCheckInRoomByOrderId")
+    public Result getCheckInRoomByOrderId(@RequestParam Map<String,String> reqParam){
+
+        String orderIdStr = reqParam.get("orderId");
+        if(StringUtils.isEmpty(orderIdStr)){
+            return Result.getResult(-1,"参数不能为空",null);
+        }
+
+        Integer orderId ;
+        try {
+            orderId = NumberUtils.parseNumber(orderIdStr,Integer.class);
+        }catch (IllegalArgumentException e){
+            logger.error("",e);
+            return Result.getResult(-2,"id必须为数字",null);
+        }
+        List<Map> list = roomDao.selectCheckInRoomByOrderId(orderId);
+        return Result.getResult(0,"success",list);
+    }
 }

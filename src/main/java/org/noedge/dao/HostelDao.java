@@ -9,4 +9,5 @@ import java.util.List;
 public interface HostelDao {
     List<Hostel> selectAll();
     List<Hostel> selectAllByPIdPermission(int permissionPId);
+    int insertHostel(Hostel hostel);
 }

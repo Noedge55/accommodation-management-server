@@ -16,7 +16,7 @@ public class Hostel implements Serializable {
     private String createTime;
     private String updateTime;
     private Integer createPId;
-    private Integer lastUpdatePID;
+    private Integer lastUpdatePId;
 
     public Integer getId() {
         return id;
@@ -66,12 +66,12 @@ public class Hostel implements Serializable {
         this.createPId = createPId;
     }
 
-    public Integer getLastUpdatePID() {
-        return lastUpdatePID;
+    public Integer getLastUpdatePId() {
+        return lastUpdatePId;
     }
 
-    public void setLastUpdatePID(Integer lastUpdatePID) {
-        this.lastUpdatePID = lastUpdatePID;
+    public void setLastUpdatePId(Integer lastUpdatePId) {
+        this.lastUpdatePId = lastUpdatePId;
     }
 
     public String getAddress() {

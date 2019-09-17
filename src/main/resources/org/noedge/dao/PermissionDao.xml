@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.noedge.dao.PermissionDao">
+    <insert id="insertPermission" parameterType="Permission" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO T_PERMISSION(person_id,group_id,hostel_id,type,create_time,create_p_id) VALUES(#{personId},#{groupId},#{hostelId},#{type},#{createTime},#{createPId})
+    </insert>
+
+</mapper>

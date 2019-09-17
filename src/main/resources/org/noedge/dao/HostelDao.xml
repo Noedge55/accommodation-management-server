@@ -9,7 +9,7 @@
         <id property="createTime" column="create_time" javaType="String"/>
         <id property="updateTime" column="update_time" javaType="String"/>
         <id property="createPId" column="create_p_id" javaType="Integer"/>
-        <id property="lastUpdatePID" column="last_update_p_id" javaType="Integer"/>
+        <id property="lastUpdatePId" column="last_update_p_id" javaType="Integer"/>
     </resultMap>
 
     <select id="selectAll" resultMap="resultMap">
@@ -19,5 +19,9 @@
     <select id="selectAllByPIdPermission" resultMap="resultMap" parameterType="Integer">
         SELECT  h.id,h.name,h.area,h.address,h.create_time,h.update_time,h.create_p_id,h.last_update_p_id from T_HOSTEL h JOIN V_PERMISSION_P_H  as total on h.id = total.hostel_id AND total.person_id = #{permissionPId}
     </select>
+
+    <insert id="insertHostel" parameterType="Hostel" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO T_HOSTEL(name,area,address,create_time,update_time,create_p_id,last_update_p_id) VALUES (#{name},#{area},#{address},#{createTime},#{updateTime},#{createPId},#{lastUpdatePId})
+    </insert>
 
 </mapper>

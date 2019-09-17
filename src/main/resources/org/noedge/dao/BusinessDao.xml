@@ -3,7 +3,7 @@
 <mapper namespace="org.noedge.dao.BusinessDao">
 <!--    获取今日旅社入住人数-->
     <select id="selectTodayLivingNumByHostelIdAndDate" resultType="Integer">
-        SELECT o.hostel_id,sum(r.living_num) living_number FROM T_CHECK_IN_ROOM r LEFT JOIN T_CHECK_IN_ORDER o ON r.order_id = o.id AND o.hostel_id in
+        SELECT o.hostel_id,sum(r.living_num) living_num FROM T_CHECK_IN_ROOM r LEFT JOIN T_CHECK_IN_ORDER o ON r.order_id = o.id AND o.hostel_id in
                 <foreach item="item" index="index" collection="list" open="("  close=")" separator=",">
                        #{arg0}
                 </foreach>
@@ -31,7 +31,7 @@
             <foreach item="item" index="index" collection="arg0" open="("  close=")" separator=",">
                 #{item}
             </foreach>
-        AND o.check_in_date <![CDATA[<=]]> '2019-08-30' AND o.check_out_date > '2019-08-30' group by o.hostel_id) two
+        AND o.check_in_date <![CDATA[<=]]> #{arg1} AND o.check_out_date > #{arg1} group by o.hostel_id) two
         ON one.hostel_id = two.hostel_id
     </select>
 

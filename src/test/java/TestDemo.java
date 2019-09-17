@@ -2,9 +2,10 @@ import com.alibaba.fastjson.JSON;
 import com.mysql.cj.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noedge.dao.RoomDao;
+import org.noedge.domain.Hostel;
 import org.noedge.domain.LoginStatus;
 import org.noedge.service.BusinessService;
+import org.noedge.service.HostelService;
 import org.noedge.service.IncomeExpenditureBillService;
 import org.noedge.service.RoomService;
 import org.noedge.tools.MyDateFomat;
@@ -48,6 +49,9 @@ public class TestDemo {
 
     @Autowired
     private RoomService roomService;
+
+    @Autowired
+    private HostelService hostelService;
     @Test
     public void getTodayLivingNumByHostelIdTest(){
         List<Integer> hostelIds = new ArrayList<Integer>() ;
@@ -79,5 +83,25 @@ public class TestDemo {
         param2.put("date","2019-08-28");
         List<Map> list = roomService.getRoomListByHostelIdAndDate(param2);
         logger.info(list.toString());
+    }
+
+    @Test
+    public void getCheckInRoomByOrderId(){
+        List<Map> list = roomService.getCheckInRoomByOrderId(1);
+        logger.info(list.toString());
+    }
+
+    @Test
+    public void insertHostelTest(){
+        Hostel hostel = new Hostel();
+        hostel.setName("向往的生活");
+        hostel.setArea("湖北省武汉市武昌区");
+        hostel.setAddress("江汉路");
+        hostel.setCreateTime("2019-09-12 15:21:00");
+        hostel.setUpdateTime("2019-09-12 15:21:00");
+        hostel.setCreatePId(1);
+        hostel.setLastUpdatePId(1);
+        logger.info(String.valueOf(hostelService.addHostel(hostel)));
+        logger.info(String.valueOf(hostel.getId()));
     }
 }
