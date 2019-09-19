@@ -19,7 +19,7 @@ public class BusinessServiceImpl implements BusinessService {
         List<Map<String,Integer>> livingNumList= businessDao.selectHostelLivingNumAll(hostelIds, MyDateFomat.formatDate());
         Map<Integer,Map<String,Integer>> result = new HashMap<Integer, Map<String, Integer>>();
         for(Map<String,Integer> temp:livingNumList){
-            result.put(temp.get("hostel_id"),temp);
+            result.put(temp.get("hostelId"),temp);
         }
         return result;
     }

@@ -24,4 +24,8 @@
         INSERT INTO T_HOSTEL(name,area,address,create_time,update_time,create_p_id,last_update_p_id) VALUES (#{name},#{area},#{address},#{createTime},#{updateTime},#{createPId},#{lastUpdatePId})
     </insert>
 
+    <update id="updateHostel" parameterType="Hostel">
+        UPDATE T_HOSTEL h SET h.`name`=#{name},h.area=#{area},h.address=#{address},h.update_time=#{updateTime},h.last_update_p_id=#{lastUpdatePId} WHERE h.id = #{id}
+    </update>
+
 </mapper>

@@ -14,7 +14,7 @@ public class Room {
     private String createTime;
     private String updateTime;
     private Integer createPId;
-    private Integer lastUpdatePID;
+    private Integer lastUpdatePId;
 
     public Integer getId() {
         return id;
@@ -56,6 +56,14 @@ public class Room {
         this.updateTime = updateTime;
     }
 
+    public Integer getTotalNum() {
+        return totalNum;
+    }
+
+    public void setTotalNum(Integer totalNum) {
+        this.totalNum = totalNum;
+    }
+
     public Integer getCreatePId() {
         return createPId;
     }
@@ -64,19 +72,11 @@ public class Room {
         this.createPId = createPId;
     }
 
-    public Integer getLastUpdatePID() {
-        return lastUpdatePID;
+    public Integer getLastUpdatePId() {
+        return lastUpdatePId;
     }
 
-    public void setLastUpdatePID(Integer lastUpdatePID) {
-        this.lastUpdatePID = lastUpdatePID;
-    }
-
-    public Integer getTotalNum() {
-        return totalNum;
-    }
-
-    public void setTotalNum(Integer totalNum) {
-        this.totalNum = totalNum;
+    public void setLastUpdatePId(Integer lastUpdatePId) {
+        this.lastUpdatePId = lastUpdatePId;
     }
 }

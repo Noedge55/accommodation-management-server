@@ -21,16 +21,16 @@
 
     <!-- 获取旅社今日入住人数以及入住总人数 -->
     <select id="selectHostelLivingNumAll" resultType="map">
-        SELECT one.hostel_id,one.total_num,two.living_num  from (select hostel_id,sum(total_num) total_num from T_ROOM where hostel_id in
-            <foreach item="item" index="index" collection="arg0" open="("  close=")" separator=",">
-                #{item}
-            </foreach>
-        group by hostel_id) one
+        SELECT h.id hostelId,IFNULL(one.total_num,0) totalNum,IFNULL(two.living_num,0) livingNum from T_HOSTEL h LEFT JOIN (select hostel_id,sum(total_num) total_num from T_ROOM where hostel_id in
+        <foreach item="item" index="index" collection="arg0" open="("  close=")" separator=",">
+            #{item}
+        </foreach>
+        group by hostel_id) one ON h.id = one.hostel_id
         LEFT JOIN
         (SELECT o.hostel_id,sum(r.living_num) living_num FROM T_CHECK_IN_ROOM r  JOIN T_CHECK_IN_ORDER o ON r.order_id = o.id AND o.hostel_id in
-            <foreach item="item" index="index" collection="arg0" open="("  close=")" separator=",">
-                #{item}
-            </foreach>
+        <foreach item="item" index="index" collection="arg0" open="("  close=")" separator=",">
+            #{item}
+        </foreach>
         AND o.check_in_date <![CDATA[<=]]> #{arg1} AND o.check_out_date > #{arg1} group by o.hostel_id) two
         ON one.hostel_id = two.hostel_id
     </select>

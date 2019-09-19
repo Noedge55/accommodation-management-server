@@ -99,4 +99,11 @@ public class MyDateFomat  {
         simpleDateFormat.applyPattern(datePattern);
         return simpleDateFormat.format(cal.getTime());
     }
+
+    public static int getDateDiffDay(String startDate,String endDate) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        long a = sdf.parse(startDate).getTime();
+        long b = sdf.parse(endDate).getTime();
+        return ((int)((b-a)/(1000 * 60 * 60 * 24)));
+    }
 }

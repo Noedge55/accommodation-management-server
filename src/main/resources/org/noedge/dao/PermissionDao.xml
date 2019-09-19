@@ -5,4 +5,8 @@
         INSERT INTO T_PERMISSION(person_id,group_id,hostel_id,type,create_time,create_p_id) VALUES(#{personId},#{groupId},#{hostelId},#{type},#{createTime},#{createPId})
     </insert>
 
+    <select id="getPermissionNum" parameterType="Permission" resultType="Integer">
+        select count(*) from V_PERMISSION_P_H WHERE person_id = #{personId} AND hostel_id=#{hostelId}
+    </select>
+
 </mapper>

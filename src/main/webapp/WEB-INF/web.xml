@@ -1,13 +1,27 @@
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>classpath*:spring-context.xml</param-value>
-  </context-param>
+    <display-name>Archetype Created Web Application</display-name>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath*:spring-context.xml</param-value>
+    </context-param>
     <filter>
-    <filter-name>loginFilter</filter-name>
-    <filter-class>org.noedge.web.filter.LoginFilter</filter-class>
-</filter>
+        <filter-name>defaultEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>defaultEncodingFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>org.noedge.web.filter.LoginFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>loginFilter</filter-name>
         <url-pattern>*</url-pattern>

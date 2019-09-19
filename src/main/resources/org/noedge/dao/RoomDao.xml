@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.noedge.dao.RoomDao">
+    <resultMap id="resultMap" type="Room">
+        <id property="id" column="id" javaType="Integer"/>
+        <id property="name" column="name" javaType="String"/>
+        <id property="totalNum" column="total_num" javaType="String"/>
+        <id property="hostelId" column="hostel_id" javaType="Integer"/>
+        <id property="createTime" column="create_time" javaType="String"/>
+        <id property="updateTime" column="update_time" javaType="String"/>
+        <id property="createPId" column="create_p_id" javaType="Integer"/>
+        <id property="lastUpdatePId" column="last_update_p_id" javaType="Integer"/>
+
+    </resultMap>
+    
     <select id="selectRoomListByHostelIdAndDate" resultType="map" parameterType="map">
         select
         r.id,
@@ -12,9 +24,9 @@
         FROM
         T_ROOM AS r
         LEFT JOIN
-        (select cir.id,sum(cir.living_num) living_num from T_CHECK_IN_ROOM cir JOIN T_CHECK_IN_ORDER cio ON cio.id = cir.order_id AND cio.hostel_id = #{hostelId}
+        (select cir.room_id,sum(cir.living_num) living_num from T_CHECK_IN_ROOM cir JOIN T_CHECK_IN_ORDER cio ON cio.id = cir.order_id
         WHERE cio.check_in_date <![CDATA[ <= ]]> #{date} and cio.check_out_date >= #{date}
-        GROUP BY cir.id) one ON r.id = one.id
+        GROUP BY cir.room_id) one ON r.id = one.room_id WHERE r.hostel_id = #{hostelId}
     </select>
 
     <!--  根据订单id，查询入住安排  -->
@@ -23,4 +35,33 @@
         where cir.order_id = #{orderId}
     </select>
 
+    <!--插入房间-->
+    <insert id="insertRoom" parameterType="Room">
+        INSERT INTO T_ROOM (`name`,total_num,hostel_id,create_time,update_time,create_p_id,last_update_p_id) VALUES (#{name},#{totalNum},#{hostelId},#{createTime},#{updateTime},#{createPId},#{lastUpdatePId})
+    </insert>
+
+    <!--根据日期查询房间已经入住人数-->
+    <select id="selectRoomCanLivingNum">
+        select cir.room_id,sum(cir.living_num) living_num from T_CHECK_IN_ROOM cir JOIN T_CHECK_IN_ORDER cio ON cio.id = cir.order_id
+        WHERE cio.hostel_id= #{arg0} AND cio.check_in_date <![CDATA[ <= ]]> #{arg1} and cio.check_out_date > #{arg1}
+        GROUP BY cir.room_id
+    </select>
+
+    <!--根据旅社id-->
+    <select id="selectRoomInfoByHostelId" resultType="Room" parameterType="Integer">
+        SELECT
+            r.id,
+            r.`name`,
+            r.total_num,
+            r.hostel_id,
+            r.create_time,
+            r.update_time,
+            r.create_p_id,
+            r.last_update_p_id
+        FROM
+            T_ROOM AS r
+        WHERE
+            r.hostel_id = #{hostelId}
+        ORDER BY r.id
+    </select>
 </mapper>

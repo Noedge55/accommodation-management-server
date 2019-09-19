@@ -4,10 +4,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noedge.domain.Hostel;
 import org.noedge.domain.LoginStatus;
-import org.noedge.service.BusinessService;
-import org.noedge.service.HostelService;
-import org.noedge.service.IncomeExpenditureBillService;
-import org.noedge.service.RoomService;
+import org.noedge.domain.Room;
+import org.noedge.service.*;
 import org.noedge.tools.MyDateFomat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +52,9 @@ public class TestDemo {
 
     @Autowired
     private HostelService hostelService;
+
+    @Autowired
+    private PermissionService permissionService;
     @Test
     public void getTodayLivingNumByHostelIdTest(){
         List<Integer> hostelIds = new ArrayList<Integer>() ;
@@ -101,7 +104,33 @@ public class TestDemo {
         hostel.setUpdateTime("2019-09-12 15:21:00");
         hostel.setCreatePId(1);
         hostel.setLastUpdatePId(1);
-        logger.info(String.valueOf(hostelService.addHostel(hostel)));
+        logger.info(String.valueOf(hostelService.addHostel(hostel,1)));
         logger.info(String.valueOf(hostel.getId()));
+    }
+
+    @Test
+    public void insertRoomTest(){
+        Room room = new Room();
+        room.setName("男生4人间");
+        room.setTotalNum(4);
+        room.setHostelId(13);
+        room.setCreateTime("2019-09-12 15:21:00");
+        room.setUpdateTime("2019-09-12 15:21:00");
+        room.setCreatePId(1);
+        room.setLastUpdatePId(1);
+        if (permissionService.judgePermission(1, 13)) {
+            logger.info("权限通过");
+             if(roomService.addRoom(room)){
+                logger.info("添加房间成功");
+             }
+        }
+    }
+
+    @Test
+    public void testDateDiff() throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        long a = sdf.parse("2018-08-01").getTime();
+        long b = sdf.parse("2018-09-01").getTime();
+        logger.info(String.valueOf((int)((b-a)/(1000 * 60 * 60 * 24))));
     }
 }

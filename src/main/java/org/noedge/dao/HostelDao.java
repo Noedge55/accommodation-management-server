@@ -10,4 +10,5 @@ public interface HostelDao {
     List<Hostel> selectAll();
     List<Hostel> selectAllByPIdPermission(int permissionPId);
     int insertHostel(Hostel hostel);
+    int updateHostel(Hostel hostel);
 }

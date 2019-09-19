@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository("permissionDao")
 public interface PermissionDao {
     int insertPermission(Permission permission);
+    int getPermissionNum(Permission permission);
 }
