@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -130,12 +131,36 @@ public class RoomController {
         if(null == roomList || roomList.size() <= 0){
             return  Result.getResult(-4,"该旅社暂无房间，请添加房间",null);
         }
+        Map<Integer,Integer> roomHasLivedNumMap = new HashMap<>();
+        for(Room room:roomList){
+            roomHasLivedNumMap.put(room.getId(),0);
+        }
 
         //查询日期入住期间旅社每间房子的可用床位
         for(int i = 0 ; i < dayDiff ; i++){
+            String nextDate = checkInDate;
+            try {
+                nextDate = MyDateFomat.getNextDiffDate(checkInDate,i);
+            } catch (ParseException e) {
+                logger.error("日期格式错误",e);
+                return Result.getResult(-2,"参数格式错误",null);
+            }
 
+            List<Map<Integer,Integer>> roomLivingNumList = roomService.getRoomLivingNum(hostelId,nextDate);
+            for(Map<Integer,Integer> temp: roomLivingNumList){
+                int roomId = temp.get("roomId");
+                int livingNum = temp.get("livingNum");
+                if(roomHasLivedNumMap.get(roomId) <= livingNum){
+                    roomHasLivedNumMap.put(roomId,livingNum);
+                }
+            }
         }
 
-        return Result.getResult(0,"success",null);
+        Map<Integer,Integer> roomMaxCanLivingNumMap = new HashMap<>();
+        for(Room room:roomList){
+            roomMaxCanLivingNumMap.put(room.getId(),room.getTotalNum() - roomHasLivedNumMap.get(room.getId()));
+        }
+
+        return Result.getResult(0,"success",roomMaxCanLivingNumMap);
     }
 }

@@ -38,7 +38,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Map> getRoomLivingNum(Integer hostelId, String date) {
+    public List<Map<Integer,Integer>> getRoomLivingNum(Integer hostelId, String date) {
         return roomDao.selectRoomLivingNum(hostelId,date);
     }
 

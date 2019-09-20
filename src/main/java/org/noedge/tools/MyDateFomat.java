@@ -106,4 +106,15 @@ public class MyDateFomat  {
         long b = sdf.parse(endDate).getTime();
         return ((int)((b-a)/(1000 * 60 * 60 * 24)));
     }
+
+    public static String getNextDiffDate(String dateStr, int diff) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = sdf.parse(dateStr);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DATE,calendar.get(Calendar.DATE) + diff);
+        Date endDate = sdf.parse(sdf.format(calendar.getTime()));
+        System.out.println(sdf.format(endDate));
+        return sdf.format(endDate);
+    }
 }

@@ -18,7 +18,7 @@ public interface RoomDao {
      * @param date
      * @return
      */
-    List<Map> selectRoomLivingNum(Integer hostelId,String date);
+    List<Map<Integer,Integer>> selectRoomLivingNum(Integer hostelId,String date);
 
     /**
      * 查询旅社房间基本信息

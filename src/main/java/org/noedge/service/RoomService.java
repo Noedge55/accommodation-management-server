@@ -9,6 +9,6 @@ public interface RoomService {
     List<Map> getRoomListByHostelIdAndDate(Map param);
     List<Map> getCheckInRoomByOrderId(Integer orderId);
     boolean addRoom(Room room);
-    List<Map> getRoomLivingNum(Integer hostelId,String date);
+    List<Map<Integer,Integer>> getRoomLivingNum(Integer hostelId,String date);
     List<Room> getRoomInfoByHostelId(Integer hostelId);
 }

@@ -41,10 +41,28 @@
     </insert>
 
     <!--根据日期查询房间已经入住人数-->
-    <select id="selectRoomCanLivingNum">
-        select cir.room_id,sum(cir.living_num) living_num from T_CHECK_IN_ROOM cir JOIN T_CHECK_IN_ORDER cio ON cio.id = cir.order_id
-        WHERE cio.hostel_id= #{arg0} AND cio.check_in_date <![CDATA[ <= ]]> #{arg1} and cio.check_out_date > #{arg1}
-        GROUP BY cir.room_id
+    <select id="selectRoomLivingNum">
+        SELECT
+            r.id roomId,
+            IFNULL( one.living_num, 0 ) livingNum
+        FROM
+            T_ROOM r
+        LEFT JOIN (
+            SELECT
+                cir.room_id,
+                sum( cir.living_num ) living_num
+            FROM
+                T_CHECK_IN_ROOM cir
+            JOIN T_CHECK_IN_ORDER cio ON cio.id = cir.order_id
+            WHERE
+                cio.hostel_id = #{arg0}
+                AND cio.check_in_date <![CDATA[ <= ]]> #{arg1} and cio.check_out_date > #{arg1}
+            GROUP BY
+                cir.room_id
+        ) one ON r.id = one.room_id
+        WHERE
+            r.hostel_id = #{arg0}
+        ORDER BY r.id
     </select>
 
     <!--根据旅社id-->
