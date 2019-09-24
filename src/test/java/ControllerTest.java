@@ -9,10 +9,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +44,8 @@ public class ControllerTest {
         param.put("hostelId", "1");
         param.put("checkInDate", "2019-08-20");
         param.put("checkOutDate", "2019-08-31");
-        mockMvc.perform(get("/getHostelCanLiving.html").accept(MediaType.APPLICATION_FORM_URLENCODED).param("hostelId", "1").param("checkInDate", "2019-08-20").param("checkOutDate", "2019-08-31")).andExpect(status().isOk()).andDo(print());
+
+        mockMvc.perform(get("/getHostelCanLiving.html").accept(MediaType.APPLICATION_FORM_URLENCODED).param("hostelId", "1").param("checkInDate", "2019-08-20").param("checkOutDate", "2019-08-31"))
+                .andDo(MockMvcResultHandlers.print());
     }
 }

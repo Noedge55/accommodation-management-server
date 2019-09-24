@@ -4,7 +4,7 @@
     <resultMap id="resultMap" type="Room">
         <id property="id" column="id" javaType="Integer"/>
         <id property="name" column="name" javaType="String"/>
-        <id property="totalNum" column="total_num" javaType="Integerf"/>
+        <id property="totalNum" column="total_num" javaType="Integer"/>
         <id property="hostelId" column="hostel_id" javaType="Integer"/>
         <id property="createTime" column="create_time" javaType="String"/>
         <id property="updateTime" column="update_time" javaType="String"/>

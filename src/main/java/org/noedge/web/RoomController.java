@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -157,10 +158,16 @@ public class RoomController {
         }
 
         Map<Integer,Integer> roomMaxCanLivingNumMap = new HashMap<>();
+        List<Map<String,Object >> resultList = new ArrayList<>();
         for(Room room:roomList){
-            roomMaxCanLivingNumMap.put(room.getId(),room.getTotalNum() - roomHasLivedNumMap.get(room.getId()));
+            Map<String,Object> resultMap = new HashMap<>();
+            resultMap.put("roomId",room.getId());
+            resultMap.put("name",room.getName());
+            resultMap.put("totalNum",room.getTotalNum());
+            resultMap.put("canLivingNum",room.getTotalNum() - roomHasLivedNumMap.get(room.getId()));
+            resultList.add(resultMap);
         }
 
-        return Result.getResult(0,"success",roomMaxCanLivingNumMap);
+        return Result.getResult(0,"success",resultList);
     }
 }
