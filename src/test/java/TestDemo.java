@@ -12,6 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,7 +30,11 @@ import java.util.Map;
 @RunWith(SpringJUnit4ClassRunner.class) //使用junit4进行测试
 @ContextConfiguration(locations={"classpath:spring-context.xml"})
 public class TestDemo {
+    @Autowired
+    private WebApplicationContext wac;
+    private MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Test
     public void loggerTest(){
         Logger logger = LoggerFactory.getLogger(this.getClass());

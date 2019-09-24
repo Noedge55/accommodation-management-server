@@ -4,7 +4,7 @@
     <resultMap id="resultMap" type="Room">
         <id property="id" column="id" javaType="Integer"/>
         <id property="name" column="name" javaType="String"/>
-        <id property="totalNum" column="total_num" javaType="String"/>
+        <id property="totalNum" column="total_num" javaType="Integerf"/>
         <id property="hostelId" column="hostel_id" javaType="Integer"/>
         <id property="createTime" column="create_time" javaType="String"/>
         <id property="updateTime" column="update_time" javaType="String"/>
@@ -40,8 +40,13 @@
         INSERT INTO T_ROOM (`name`,total_num,hostel_id,create_time,update_time,create_p_id,last_update_p_id) VALUES (#{name},#{totalNum},#{hostelId},#{createTime},#{updateTime},#{createPId},#{lastUpdatePId})
     </insert>
 
+    <resultMap id="selectRoomLivingNumResult" type="map">
+        <id column="roomId" property="roomId" javaType="Integer"/>
+        <id column="livingNum" property="livingNum" javaType="Integer"/>
+    </resultMap>
+
     <!--根据日期查询房间已经入住人数-->
-    <select id="selectRoomLivingNum">
+    <select id="selectRoomLivingNum" resultMap="selectRoomLivingNumResult">
         SELECT
             r.id roomId,
             IFNULL( one.living_num, 0 ) livingNum
@@ -66,7 +71,7 @@
     </select>
 
     <!--根据旅社id-->
-    <select id="selectRoomInfoByHostelId" resultType="Room" parameterType="Integer">
+    <select id="selectRoomInfoByHostelId" resultMap="resultMap" parameterType="Integer">
         SELECT
             r.id,
             r.`name`,
